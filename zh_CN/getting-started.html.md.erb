@@ -1,32 +1,33 @@
 ---
-title: Getting Started with the cf CLI
+title: 开始使用cf CLI
 owner: CLI
 ---
 
 <strong><%= modified_date %></strong>
 
-This topic describes configuring and getting started with the Cloud Foundry Command Line Interface (cf CLI). 
-This page assumes you have the latest version of the cf CLI. 
-See the [Installing the Cloud Foundry Command Line Interface](./install-go-cli.html) topic for installation instructions.
+本节描述如何配置和开始使用 Cloud Foundry 命令行接口 (cf CLI).
+本页假定你已经安装了最新版本的 cf CLI.
+安装说明见 [安装 cf CLI](./install-go-cli.html).
 
-##<a id='i18n'></a>Localize ##
+##<a id='i18n'></a>本地化 ##
 
-The cf CLI translates terminal output into the language that you select. The default language is <code>en-US</code>. The cf CLI supports the following languages:
+cf CLI 会将终端输出翻译成你所选择的语言. 默认语言是 <code>en-US</code>. cf CLI 支持以下语言:
 
-*  Chinese (simplified): <code>zh-Hans</code>
-*  Chinese (traditional): <code>zh-Hant</code>
-*  English: <code>en-US</code>
-*  French: <code>fr-FR</code>
-*  German: <code>de-DE</code>
-*  Italian: <code>it-IT</code>
-*  Japanese: <code>ja-JP</code>
-*  Korean: <code>ko-KR</code>
-*  Portuguese (Brazil): <code>pt-BR</code>
-*  Spanish: <code>es-ES</code>
+*  中文 (简体): <code>zh-Hans</code>
+*  中文 (正体): <code>zh-Hant</code>
+*  英语: <code>en-US</code>
+*  法语: <code>fr-FR</code>
+*  德语: <code>de-DE</code>
+*  意大利语: <code>it-IT</code>
+*  日语: <code>ja-JP</code>
+*  韩语: <code>ko-KR</code>
+*  葡萄牙语 (巴西): <code>pt-BR</code>
+*  西班牙语: <code>es-ES</code>
 
-Use [cf config](http://cli.cloudfoundry.org/en-US/cf/config.html) to set the language. To set the language with `cf config`, use the syntax: <code>$ cf config --locale YOUR_LANGUAGE </code>.  
+使用 [cf config](http://cli.cloudfoundry.org/en-US/cf/config.html) 设置语言.
+用 `cf config`设置语言, 使用语法: <code>$ cf config --locale YOUR_LANGUAGE </code>.
 
-For example, to set the language to Portuguese and confirm the change by running `cf help`:
+例如, 设置语言为 葡萄牙语 并运行 by running `cf help`确认修改:
 
 <pre class="terminal">
 $ cf config --locale pt-BR
@@ -42,15 +43,19 @@ VERSÃO:
    ...
 </pre>
 
-<p class='note'><strong>Note</strong>: Localization with <code>cf config --locale</code> affects only messages that the cf CLI generates. </p>
+<p class='note'><strong>Note</strong>: 使用 <code>cf config --locale</code>本地化地信息
+  只影响cf CLI 产生的信息. </p>
 
-## <a id='login'></a>Login ##
+## <a id='login'></a>登录 ##
 
-Use [cf login](http://cli.cloudfoundry.org/en-US/cf/login.html) to log in to <%= vars.product_short %>. The `cf login` command uses the following syntax to specify a target API endpoint, an org (organization), and a space: <code>$ cf login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE] </code>.  
+使用 [cf login](http://cli.cloudfoundry.org/en-US/cf/login.html) 登录到 <%= vars.product_short %>.
+`cf login` 命令使用下列语法指定 target API endpoint, org (即organization), 以及 space:
+
+<code>$ cf login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE] </code>.
 
 * `API_URL`: This is your API endpoint, <%=vars.api_endpoint%>.
 * `USERNAME`: Your username.
-* `PASSWORD`: Your password. Use of the `-p` option is discouraged as it may record your password in your shell history. 
+* `PASSWORD`: Your password. Use of the `-p` option is discouraged as it may record your password in your shell history.
 * `ORG`: The org where you want to deploy your apps.
 * `SPACE`: The space in the org where you want to deploy your apps.
 
@@ -83,7 +88,7 @@ Targeted space development
 
 Alternatively, you can write a script to log in and set your target using the non-interactive [cf api](http://cli.cloudfoundry.org/en-US/cf/api.html), [cf auth](http://cli.cloudfoundry.org/en-US/cf/auth.html), and [cf target](http://cli.cloudfoundry.org/en-US/cf/target.html) commands.
 
-Upon successful login, the cf CLI saves a `config.json` file containing your API endpoint, org, space values, and access token. 
+Upon successful login, the cf CLI saves a `config.json` file containing your API endpoint, org, space values, and access token.
 If you change these settings, the `config.json` file is updated accordingly.
 
 By default, `config.json` is located in your `~/.cf` directory. The `CF_HOME` environment variable allows you to locate the `config.json` file wherever you like.
@@ -146,8 +151,8 @@ OK
 
 The [cf push](http://cli.cloudfoundry.org/en-US/cf/push.html) command pushes a new app or syncs changes to an existing app.
 
-If you do not provide a hostname (also known as subdomain), `cf push` routes your app to a URL of the form `APPNAME.DOMAIN` based on the name of your app and your default domain. 
-If you want to map a different route to your app, see the [Routes and Domains](../devguide/deploy-apps/routes-domains.html) topic for information about creating routes. 
+If you do not provide a hostname (also known as subdomain), `cf push` routes your app to a URL of the form `APPNAME.DOMAIN` based on the name of your app and your default domain.
+If you want to map a different route to your app, see the [Routes and Domains](../devguide/deploy-apps/routes-domains.html) topic for information about creating routes.
 
 The `cf push` command supports many options that determine how and where the app instances are deployed. For details about the `cf push` command, see the [push](http://cli.cloudfoundry.org/en-US/cf/push.html) page in the Cloud Foundry CLI Reference Guide.
 
@@ -187,16 +192,16 @@ For more information about available buildpacks, see the <a href="../buildpacks/
 
 To create or update a user-provided service instance, you need to supply basic parameters. For example a database service might require a username, password, host, port, and database name.
 
-The cf CLI has three ways of supplying these parameters to create or update an instance of a service: interactively, non-interactively, and in conjunction with 
+The cf CLI has three ways of supplying these parameters to create or update an instance of a service: interactively, non-interactively, and in conjunction with
 third-party log management software as described in [RFC 6587](http://tools.ietf.org/html/rfc6587). When used with third-party logging, the cf CLI sends data formatted according to [RFC 5424](http://tools.ietf.org/html/rfc5424).
 
-You create a service instance with `cf cups` and update one with `cf uups` as described below. 
+You create a service instance with `cf cups` and update one with `cf uups` as described below.
 
 ### <a id='user-cups'></a>The cf create-user-provided-service (cups) Command ###
 
 Use [cf create-user-provided-service](http://cli.cloudfoundry.org/en-US/cf/create-user-provided-service.html) (alias `cf cups`) creates a new service instance.
 
-**To supply service instance parameters interactively:** Specify parameters in a comma-separated list after the `-p` flag. This example command-line session creates a service instance for a database service.  
+**To supply service instance parameters interactively:** Specify parameters in a comma-separated list after the `-p` flag. This example command-line session creates a service instance for a database service.
 
   <pre class="terminal">$ cf cups sql-service-instance -p "host, port, dbname, username, password"
 host> mysql.example.com
@@ -222,12 +227,12 @@ Creating user provided service mylog in org example-org / space development as u
 OK
 </pre>
 
-After you create a user-provided service instance, you bind it to an app with [cf bind-service](http://cli.cloudfoundry.org/en-US/cf/bind-service.html), 
+After you create a user-provided service instance, you bind it to an app with [cf bind-service](http://cli.cloudfoundry.org/en-US/cf/bind-service.html),
 unbind it with [cf unbind-service](http://cli.cloudfoundry.org/en-US/cf/unbind-service.html), rename it with [cf rename-service](http://cli.cloudfoundry.org/en-US/cf/rename-service.html), and delete it with [cf delete-service](http://cli.cloudfoundry.org/en-US/cf/delete-service.html).
 
 ### <a id='user-uups'></a> The cf update-user-provided-service (uups) Command ###
 
-Use [cf update-user-provided-service](http://cli.cloudfoundry.org/en-US/cf/update-user-provided-service.html) (alias `cf uups`) to update one or more of the parameters for an existing user-provided service instance. 
+Use [cf update-user-provided-service](http://cli.cloudfoundry.org/en-US/cf/update-user-provided-service.html) (alias `cf uups`) to update one or more of the parameters for an existing user-provided service instance.
 The `cf uups` command uses the same syntax as `cf cups` [above](#user-cups) to set parameter values. The `cf uups` command does not update any parameter values that you do not supply.
 
 ## <a id='return-codes'></a> cf CLI Return Codes ##
@@ -254,4 +259,3 @@ OPTIONS:
    -f       Force deletion without confirmation
    -r       Also delete any mapped routes
 </pre>
-
