@@ -43,8 +43,7 @@ VERSÃO:
    ...
 </pre>
 
-<p class='note'><strong>Note</strong>: 使用 <code>cf config --locale</code>本地化地信息
-  只影响cf CLI 产生的信息. </p>
+<p class='note'><strong>Note</strong>: 使用 <code>cf config --locale</code>本地化地信息只影响cf CLI 产生的信息. </p>
 
 ## <a id='login'></a>登录 ##
 
@@ -53,13 +52,13 @@ VERSÃO:
 
 <code>$ cf login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE] </code>.
 
-* `API_URL`: This is your API endpoint, <%=vars.api_endpoint%>.
-* `USERNAME`: Your username.
-* `PASSWORD`: Your password. Use of the `-p` option is discouraged as it may record your password in your shell history.
-* `ORG`: The org where you want to deploy your apps.
-* `SPACE`: The space in the org where you want to deploy your apps.
+* `API_URL`: 这是你的 API endpoint, <%=vars.api_endpoint%>.
+* `USERNAME`: 你的用户名.
+* `PASSWORD`: 你的密码. 不鼓励使用`-p`选项, 因为会在shell历史中记录密码.
+* `ORG`: 你想要部署的应用的org.
+* `SPACE`: 你想要部署的应用所在的org中的space.
 
-The cf CLI prompts for credentials as needed. If you are a member of multiple orgs or spaces, `cf login` prompts you for which ones to log into. Otherwise it targets your org and space automatically.
+cf CLI会提示所需密码, 如果你是多个org或space的成员,`cf login`会提示你要登录到哪个. 否则会自动选择org和space.
 
 <pre class="terminal">
 $ cf login -a https://api.example.com -u username<span>@</span>example.com
@@ -85,27 +84,29 @@ Space> 1
 Targeted space development
 
 </pre>
+另外, 你可以写脚本登录和设置target,
+这要使用非交互的[cf api](http://cli.cloudfoundry.org/en-US/cf/api.html), [cf auth](http://cli.cloudfoundry.org/en-US/cf/auth.html), 以及 [cf target](http://cli.cloudfoundry.org/en-US/cf/target.html)命令.
 
-Alternatively, you can write a script to log in and set your target using the non-interactive [cf api](http://cli.cloudfoundry.org/en-US/cf/api.html), [cf auth](http://cli.cloudfoundry.org/en-US/cf/auth.html), and [cf target](http://cli.cloudfoundry.org/en-US/cf/target.html) commands.
+登录成功后, cf CLI保存`config.json`文件, 该文件包含API endpoint, org, space, 以及access token.
+如果你改变了这些设置, `config.json`文件会相应更行.
 
-Upon successful login, the cf CLI saves a `config.json` file containing your API endpoint, org, space values, and access token.
-If you change these settings, the `config.json` file is updated accordingly.
+默认情况, `config.json`位于`~/.cf`目录.
+`CF_HOME`环境变量允许你指定`config.json`文件到任意位置.
 
-By default, `config.json` is located in your `~/.cf` directory. The `CF_HOME` environment variable allows you to locate the `config.json` file wherever you like.
+## <a id='user-roles'></a> Users 和 Roles ##
 
-## <a id='user-roles'></a> Users and Roles ##
+cf CLI 包含了列出users以及在org和space中assign roles的命令.
+参见[Orgs, Spaces, Roles, 和 Permissions](../concepts/roles.html).
 
-The cf CLI includes commands that list users and assign roles in orgs and spaces. See the [Orgs, Spaces, Roles, and Permissions](../concepts/roles.html) topic.
+### <a id='listing-users'></a>列出 Users的命令 ###
 
-### <a id='listing-users'></a>Commands for Listing Users ###
-
-These commands take an org or space as an argument:
+以下命令接受 org 或 space 作为参数:
 
 * [cf org-users](http://cli.cloudfoundry.org/en-US/cf/org-users.html)
 
 * [cf space-users](http://cli.cloudfoundry.org/en-US/cf/space-users.html)
 
-For example, to list the users who are members of an org:
+例如, 列出是org的成员的用户
 
 <pre class="terminal">
 $ cf org-users example-org
@@ -122,9 +123,9 @@ ORG AUDITOR
   louie<span>@</span>example.com
 </pre>
 
-### <a id='managing-roles'></a>Commands for Managing Roles ###
+### <a id='managing-roles'></a>管理 Roles 的命令###
 
-These commands require <%=vars.product_short%> admin permissions and take username, org or space, and role as arguments:
+以下命令需要 <%=vars.product_short%> admin 权限, 并接受username, org 或 space, 以及 role 作为参数:
 
 * [cf set-org-role](http://cli.cloudfoundry.org/en-US/cf/set-org-role.html)
 
@@ -134,7 +135,8 @@ These commands require <%=vars.product_short%> admin permissions and take userna
 
 * [cf unset-space-role](http://cli.cloudfoundry.org/en-US/cf/unset-space-role.html)
 
-Available roles are "OrgManager", "BillingManager", "OrgAuditor", "SpaceManager", "SpaceDeveloper", and "SpaceAuditor". For example, to grant the Org Manager role to a user within an org:
+可用的roles是 "OrgManager", "BillingManager", "OrgAuditor", "SpaceManager", "SpaceDeveloper", 和 "SpaceAuditor".
+例如, 给org内的一个user赋予Org Manager的role:
 
 <pre class="terminal">
 $ cf set-org-role huey@example.com example-org OrgManager
@@ -143,22 +145,25 @@ Assigning role OrgManager to user huey<span>@</span>example.com in org example-o
 OK
 </pre>
 
-<p class="note"><strong>Note</strong>: If you are not a <%=vars.product_short%> admin, you see this message when you try to run these commands:
-<code>error code: 10003, message: You are not authorized to perform the requested action</code></p>
+<p class="note"><strong>Note</strong>:如果你不是<%=vars.product_short%> admin, 当你运行命令时,你会看到这个信息:<code>error code: 10003, message: You are not authorized to perform the requested action</code></p>
 
 
-## <a id='push'></a>Push
+## <a id='push'></a>Push ##
 
-The [cf push](http://cli.cloudfoundry.org/en-US/cf/push.html) command pushes a new app or syncs changes to an existing app.
+[cf push](http://cli.cloudfoundry.org/en-US/cf/push.html)命令push一个新app或者同步改变到已经存在的app
 
-If you do not provide a hostname (also known as subdomain), `cf push` routes your app to a URL of the form `APPNAME.DOMAIN` based on the name of your app and your default domain.
-If you want to map a different route to your app, see the [Routes and Domains](../devguide/deploy-apps/routes-domains.html) topic for information about creating routes.
+如果你不提供hostname (也叫subdomain), `cf push`会将你的app route到形如`APPNAME.DOMAIN`的URL, 这基于你app的名称和默认的domain
+如果你想map不同的route到你的app, 参见[Routes 和 Domains](../devguide/deploy-apps/routes-domains.html)关于创建routes的信息.
 
-The `cf push` command supports many options that determine how and where the app instances are deployed. For details about the `cf push` command, see the [push](http://cli.cloudfoundry.org/en-US/cf/push.html) page in the Cloud Foundry CLI Reference Guide.
+`cf push`命令在支持许多参数, 这会决定app的instance如何和在哪里部署.
+更多关于`cf push`的细节, 参见Cloud Foundry CLI Reference Guide中的[push](http://cli.cloudfoundry.org/en-US/cf/push.html)页
 
-The following example pushes an app called `my-awesome-app` to the URL `http://my-awesome-app.example.com` and specifies the Ruby buildpack with the `-b` flag.
+下列例子push一个名为`my-awesome-app`的app到URL `http://my-awesome-app.example.com`, 并用`-b`指定Ruby buildpack.
 
-<p class="note"><strong>Note</strong>: When you push an app and specify a buildpack with the <code>-b</code> flag, the app remains permanently linked to that buildpack. To use the app with a different buildpack, you must delete the app and re-push it.</p>
+<p class="note"><strong>Note</strong>:
+  当你push一个app并用<code>-b</code>指定buildpack时, 该app会永久的连接到这个buildpack.
+  要在app使用另外一个buildpack, 你必须删除app并重新push.
+</p>
 
 <pre class="terminal">
 $ cf push my-awesome-app -b ruby_buildpack
@@ -186,20 +191,22 @@ buildpack: ruby_buildpack
 #0   running   2016-06-08 04:44:07 PM   0.0%   0 of 1G   0 of 1G
 </pre>
 
-For more information about available buildpacks, see the <a href="../buildpacks/">Buildpacks</a> topic.
+更多关于可用的buidpack的信息, 参见<a href="../buildpacks/">Buildpacks</a>.
 
-## <a id='user-provided'></a> User-Provided Service Instances ##
+## <a id='user-provided'></a> 用户提供的Service Instances ##
 
-To create or update a user-provided service instance, you need to supply basic parameters. For example a database service might require a username, password, host, port, and database name.
+为创建或更新用户提供的service instance, 你需要提供基本的参数.
+例如数据库service可能需要用户名,密码,host,port,以及数据库名称.
 
-The cf CLI has three ways of supplying these parameters to create or update an instance of a service: interactively, non-interactively, and in conjunction with
-third-party log management software as described in [RFC 6587](http://tools.ietf.org/html/rfc6587). When used with third-party logging, the cf CLI sends data formatted according to [RFC 5424](http://tools.ietf.org/html/rfc5424).
+cf CLI有三种方式提供这些参数以创建或更新service的instance:
+交互式,非交互式,以及与[RFC 6587](http://tools.ietf.org/html/rfc6587)所描述的第三方log管理软件.
+当与第三方logging使用时,cf CLI发送根据[RFC 5424](http://tools.ietf.org/html/rfc5424)格式的数据.
 
-You create a service instance with `cf cups` and update one with `cf uups` as described below.
+如下描述, 使用`cf cups`创建service instance, 使用`cf uups`更新它.
 
-### <a id='user-cups'></a>The cf create-user-provided-service (cups) Command ###
+### <a id='user-cups'></a>cf create-user-provided-service (cups) 命令 ###
 
-Use [cf create-user-provided-service](http://cli.cloudfoundry.org/en-US/cf/create-user-provided-service.html) (alias `cf cups`) creates a new service instance.
+使用 [cf create-user-provided-service](http://cli.cloudfoundry.org/en-US/cf/create-user-provided-service.html) (别名 `cf cups`) 创建新的 service instance.
 
 **To supply service instance parameters interactively:** Specify parameters in a comma-separated list after the `-p` flag. This example command-line session creates a service instance for a database service.
 
