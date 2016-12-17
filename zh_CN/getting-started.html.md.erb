@@ -208,7 +208,9 @@ cf CLI有三种方式提供这些参数以创建或更新service的instance:
 
 使用 [cf create-user-provided-service](http://cli.cloudfoundry.org/en-US/cf/create-user-provided-service.html) (别名 `cf cups`) 创建新的 service instance.
 
-**To supply service instance parameters interactively:** Specify parameters in a comma-separated list after the `-p` flag. This example command-line session creates a service instance for a database service.
+**交互式提供 service instance 参数:**
+在`-p`后指定一个逗号分割的参数列表.
+这个命令行交互例子创建一个数据库服务的service instance.
 
   <pre class="terminal">$ cf cups sql-service-instance -p "host, port, dbname, username, password"
 host> mysql.example.com
@@ -220,36 +222,50 @@ Creating user provided service sql-service-instance in org example-org / space d
 OK
 </pre>
 
-**To supply service instance parameters to `cf cups` non-interactively:** Pass parameters and their values in as a JSON hash, bound by single quotes, after the `-p` tag. This example is a non-interactive version of the `cf cups` session above.
+**交互式提供 service instance 参数:**
+在`-p`之后, 将参数及其值以JSON hash传入, 并用单引号.
+本例是上面例子的非交互版本:
 
   <pre class="terminal">$ cf cups sql-service-instance -p '{"host":"mysql.example.com", "port":"1433", "dbname":"mysqldb", "username":"admin","password":"pa55woRD"}'
 Creating user provided service sql-service-instance in org example-org / space development as username<span>@</span>example.com...
 OK
 </pre>
 
-**To create a service instance that sends data to a third-party:** Use the `-l` option followed by the external destination URL. This example creates a service instance that sends log information to the syslog drain URL of a third-party log management service. For specific log service instructions, see the [Service-Specific Instructions for Streaming Application Logs](../devguide/services/log-management-thirdparty-svc.html) topic.
+**创建发送数据到第三方的service instance :**
+使用 `-l` 选项,后面是外部目的URL.
+本例创建了发送日志信息到第三方log管理服务的service instance.
+具体的log service说明, 参见 [服务特定的 Streaming Application Logs 使用说明 ](../devguide/services/log-management-thirdparty-svc.html).
 
   <pre class="terminal">$ cf cups mylog -l syslog://logs4.example.com:25258
 Creating user provided service mylog in org example-org / space development as username<span>@</span>example.com...
 OK
 </pre>
 
-After you create a user-provided service instance, you bind it to an app with [cf bind-service](http://cli.cloudfoundry.org/en-US/cf/bind-service.html),
-unbind it with [cf unbind-service](http://cli.cloudfoundry.org/en-US/cf/unbind-service.html), rename it with [cf rename-service](http://cli.cloudfoundry.org/en-US/cf/rename-service.html), and delete it with [cf delete-service](http://cli.cloudfoundry.org/en-US/cf/delete-service.html).
+创建用户提供的service instance之后, 使用
+[cf bind-service](http://cli.cloudfoundry.org/en-US/cf/bind-service.html)]绑定服务到app,
+[cf unbind-service](http://cli.cloudfoundry.org/en-US/cf/unbind-service.html)解除绑定,
+[cf rename-service](http://cli.cloudfoundry.org/en-US/cf/rename-service.html)重命名服务
+以及[cf delete-service](http://cli.cloudfoundry.org/en-US/cf/delete-service.html)删除服务.
 
-### <a id='user-uups'></a> The cf update-user-provided-service (uups) Command ###
+### <a id='user-uups'></a> cf update-user-provided-service (uups) 命令 ###
 
-Use [cf update-user-provided-service](http://cli.cloudfoundry.org/en-US/cf/update-user-provided-service.html) (alias `cf uups`) to update one or more of the parameters for an existing user-provided service instance.
-The `cf uups` command uses the same syntax as `cf cups` [above](#user-cups) to set parameter values. The `cf uups` command does not update any parameter values that you do not supply.
+使用[cf update-user-provided-service](http://cli.cloudfoundry.org/en-US/cf/update-user-provided-service.html) (别名 `cf uups`)
+来更新已经存在的用户提供的service instance的一个或多个参数
+`cf uups` 命令与[上述](#user-cups)`cf cups`使用相同的语法设置参数值
+`cf uups` 命令不会更新任何你不提供的参数值.
 
-## <a id='return-codes'></a> cf CLI Return Codes ##
+## <a id='return-codes'></a> cf CLI 返回值 ##
 
-The cf CLI uses exit codes, which help with scripting and confirming that a command has run successfully. For example, after you run a cf CLI command, you can retrieve its return code by running `echo $?` (on Windows, `echo %ERRORLEVEL%`). If the return code is `0`, the command was successful.
+cf CLI 使用exit codes, 有助于脚本编写, 以及确认命令是否运行成功.
+例如, 在运行一个 cf CLI 命令后,
+你可以用`echo $?` (Windows上, `echo %ERRORLEVEL%`)获取返回值.
+如果返回值是 `0`, 命令成功.
 
-## <a id='help'></a> The cf help Command ##
+## <a id='help'></a> cf help 命令 ##
 
-The [cf help](http://cli.cloudfoundry.org/en-US/cf) command lists the cf CLI commands and a brief description of each.
-Passing the `-h` flag to any command lists detailed help, including any aliases. For example, to see detailed help for `cf delete`, run:
+[cf help](http://cli.cloudfoundry.org/en-US/cf) 命令列出 cf CLI 命令及每个命令简短的描述.
+任何命令使用`-h`列出详细帮助, 包括使用的任何别名.
+例如, 查看 `cf delete` 的详细帮助, 运行:
 
 <pre class="terminal">
 $ cf delete -h
