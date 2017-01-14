@@ -1,74 +1,67 @@
 ---
-title: Using the cf CLI with an HTTP Proxy Server
+title: 在有HTTP代理服务器的环境中使用cf CLI
 owner: CLI
 ---
 
 <strong><%= modified_date %></strong>
 
-If you have an HTTP proxy server on your network between a host running the cf CLI and your Cloud Foundry API endpoint, you must set `https_proxy` with the hostname or IP address of the proxy server.
+如果在你运行cf CLI的主机与Cloud Foundry API endpoint之间有HTTP代理服务器,
+你必须用代理服务器的hostname或者IP地址来设定`https_proxy`.
 
-The `https_proxy` environment variable holds the hostname or IP address of your
-proxy server.
+`https_proxy`环境变量存有代理服务器的hostname或者IP地址.
 
-`https_proxy` is a standard environment variable.
-Like any environment variable, the specific steps you use to set it depends on
-your operating system.
+`https_proxy`是个标准的环境变量
+像其他环境变量一样, 设定的具体步骤决定于操作系统.
 
-## <a id="format"></a>Format of https_proxy ##
+## <a id="format"></a>https_proxy的格式 ##
 
-`https_proxy` is set with hostname or IP address of the proxy server in URL
-format: `https_proxy=http://proxy.example.com`
+用代理服务器的hostname或者IP地址的URL格式设置`https_proxy`:
+`https_proxy=http://proxy.example.com`
 
-If the proxy server requires a user name and password, include the credentials:
+如果代理服务器需要用户名以及密码, 将其包含进URL:
 `https_proxy=http://username:password@proxy.example.com`
 
-If the proxy server uses a port other than 80, include the port number:
+如果代理服务器使用的端口不是80, 将端口包含进URL:
 `https_proxy=http://username:password@proxy.example.com:8080`
 
 
-## <a id="mac-linux"></a>Setting https_proxy in Mac OS or Linux ##
+## <a id="mac-linux"></a>在Mac OS 或Linux 中设定https_proxy ##
 
-Set the `https_proxy` environment variable using the command specific to your
-shell.
-For example, in bash, use the `export` command.
+使用命令行特定的命令设置`https_proxy`环境变量.
+例如, 在bash中, 使用`export`命令.
 
-Example:
+例子:
 <pre class=terminal>
 $ export https_proxy=http:/<span>/</span>my.proxyserver.com:8080
 </pre>
 
-To make this change persistent, add the command to the appropriate profile file
-for the shell.
-For example, in bash, add a line like the following to your `.bash_profile` or
-`.bashrc` file:
+添加命令到适当的profile文件,使环境变量的修改一直有效.
+例如, 在bash中, 添加如下命令到`.bash_profile`或者`.bashrc`文件:
 
 <pre class="detect-script"t>
   https_proxy=http://username:password@hostname:port
   export $https_proxy
 </pre>
 
-## <a id="windows"></a>Setting https_proxy in Windows ##
+## <a id="windows"></a>在Windows中设置 https_proxy ##
 
-1. Open the Start menu. Right-click **Computer** and select **Properties**.
-
+1. 打开开始菜单. 右键**电脑**选择**属性**.
     <%= image_tag("./images/properties.png") %>
 
-1. In the left pane of the System window, click **Advanced system settings**.
-
+1. 在 系统 窗口的左面板, 点击**高级系统设置**.
     <%= image_tag("./images/adv-settings.png") %>
 
-1. In the System Properties window, select the **Advanced** tab, then click
-**Environment Variables**.
+1. 在 系统属性 窗口, 选择**高级**标签, 点击**环境变量**.
 
     <%= image_tag("./images/env-var.png") %>
 
-1. In the Environment Variables window, under User variables, click **New**.
+1. 在 环境变量 窗口, 用户变量下, 点击**新建**.
 
     <%= image_tag("./images/new.png") %>
 
-1. In the Variable name field, input `https_proxy`.
-In the Variable value field, input your proxy server information.
+1. 在 变量名 中, 输入`https_proxy`.
+在 变量值 中, 输入你的代理服务器信息.
 
     <%= image_tag("./images/proxy.png") %>
 
-1. Click **OK**.
+1. 点击 **确定**.
